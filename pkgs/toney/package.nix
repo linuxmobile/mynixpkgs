@@ -10,11 +10,11 @@ buildGoModule rec {
   src = fetchFromGitHub {
     owner = "SourcewareLab";
     repo = "Toney";
-    rev = "v${version}";
-    hash = "sha256-lDGCRtwCpW/bZlfcb100g7tMXN2dlCPnCY7qVFyayUo=";
+    tag = "v${version}";
+    hash = "sha256-o9W0HsLWNgwIyZtb55kzMw7hOtt+ueWkz/rxbb+pgJg=";
   };
 
-  vendorHash = "sha256-JqQnLwkxRt+CiP90F+1i4MAiOw3akMQ5BeQXCplZdxA=";
+  vendorHash = "sha256-7I3RIrEc+uz8LQCRe0jXPfKqXojHsksZ7w4M9OLY6hM=";
 
   doCheck = false;
 
