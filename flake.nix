@@ -12,22 +12,29 @@
     ...
   } @ inputs: let
     pkgsDir = builtins.readDir ./pkgs;
-    dirs = builtins.filter (name: builtins.pathExists (./pkgs + "/" + name + "/package.nix")) (builtins.attrNames pkgsDir);
+    dirs = builtins.filter (
+      name:
+        pkgsDir.${name}
+        == "directory"
+        && builtins.hasAttr "package.nix" (builtins.readDir (./pkgs/${name}))
+    ) (builtins.attrNames pkgsDir);
   in
-    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
-      systems = ["x86_64-linux" "aarch64-linux"];
-      imports = [];
+    builtins.trace dirs (
+      inputs.flake-parts.lib.mkFlake {inherit inputs;} {
+        systems = ["x86_64-linux" "aarch64-linux"];
+        imports = [];
 
-      perSystem = {pkgs, ...}: {
-        packages = pkgs.lib.genAttrs dirs (name: pkgs.callPackage (./pkgs + "/" + name + "/package.nix") {});
-        formatter = pkgs.alejandra;
-        checks = {
-          glow-build = pkgs.runCommand "glow-build-test" {} ''
-            ${pkgs.glow}/bin/glow --version > $out
-          '';
+        perSystem = {pkgs, ...}: {
+          packages = pkgs.lib.genAttrs dirs (name: pkgs.callPackage (./pkgs/${name}/package.nix) {});
+          formatter = pkgs.alejandra;
+          checks = {
+            glow-build = pkgs.runCommand "glow-build-test" {} ''
+              ${pkgs.glow}/bin/glow --version > $out
+            '';
+          };
         };
-      };
-    };
+      }
+    );
 
   nixConfig = {
     allowInsecure = true;
