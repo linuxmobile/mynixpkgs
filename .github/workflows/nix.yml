@@ -1,7 +1,7 @@
 name: Nix
 
 on:
-  workflow_call:
+  push:
     inputs:
       command:
         required: true

@@ -34,7 +34,7 @@
           };
           devShells = {
             default = pkgs.mkShell {
-              buildInputs = [ pkgs.alejandra pkgs.git ];
+              buildInputs = [pkgs.alejandra pkgs.git];
             };
           };
         };
