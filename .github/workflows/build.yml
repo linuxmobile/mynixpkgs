@@ -11,9 +11,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-         package:
-           - glow
+        package:
+          - glow
+          - toney
+
     uses: ./.github/workflows/nix.yml
     with:
-      command: nix build -L .#${{ glow.package }}
+      command: nix build -L .#${{ matrix.package }}
     secrets: inherit
