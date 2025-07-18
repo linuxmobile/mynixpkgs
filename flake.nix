@@ -32,6 +32,11 @@
               ${pkgs.glow}/bin/glow --version > $out
             '';
           };
+          devShells = {
+            default = pkgs.mkShell {
+              buildInputs = [ pkgs.alejandra pkgs.git ];
+            };
+          };
         };
       }
     );
