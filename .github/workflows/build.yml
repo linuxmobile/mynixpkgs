@@ -1,0 +1,19 @@
+name: Build
+
+on:
+  workflow_call:
+    secrets:
+      CACHIX_AUTH_TOKEN:
+        required: false
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+         package:
+           - glow
+    uses: ./.github/workflows/nix.yml
+    with:
+      command: nix build -L .#${{ glow.package }}
+    secrets: inherit
