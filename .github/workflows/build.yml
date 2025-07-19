@@ -1,7 +1,7 @@
 name: Build
 
 on:
-  push:
+  workflow_call:
     secrets:
       CACHIX_AUTH_TOKEN:
         required: false
@@ -12,9 +12,10 @@ jobs:
       fail-fast: false
       matrix:
         package:
-          - glow
           - toney
+          - prs
 
     uses: ./.github/workflows/nix.yml
     with:
       command: nix build -L .#${{ matrix.package }}
+    secrets: inherit

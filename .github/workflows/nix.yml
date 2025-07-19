@@ -6,10 +6,9 @@ on:
       command:
         required: true
         type: string
-      cachix_name:
+    secrets:
+      CACHIX_AUTH_TOKEN:
         required: false
-        type: string
-        default: linuxmobile
 
 jobs:
   nix:
@@ -19,5 +18,6 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: cachix/cachix-action@v15
         with:
-          name: ${{ inputs.cachix_name }}
+          name: linuxmobile
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - run: ${{ inputs.command }}
