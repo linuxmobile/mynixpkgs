@@ -1,14 +1,15 @@
 name: Nix
 
 on:
-  push:
+  workflow_call:
     inputs:
       command:
         required: true
         type: string
-    secrets:
-      CACHIX_AUTH_TOKEN:
+      cachix_name:
         required: false
+        type: string
+        default: linuxmobile
 
 jobs:
   nix:
@@ -18,6 +19,5 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: cachix/cachix-action@v15
         with:
-          name: nix-gaming
-          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+          name: ${{ inputs.cachix_name }}
       - run: ${{ inputs.command }}
