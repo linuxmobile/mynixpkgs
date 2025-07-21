@@ -12,8 +12,10 @@ jobs:
       fail-fast: false
       matrix:
         package:
-          - toney
+          - bmm
+          - opencode
           - prs
+          - toney
 
     uses: ./.github/workflows/nix.yml
     with:
