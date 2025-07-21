@@ -4,11 +4,14 @@
   buildGoModule,
   bun,
   fetchFromGitHub,
-  models-dev,
+  # models-dev is imported directly below, not passed as an argument.
   nix-update-script,
   testers,
   writableTmpDirAsHomeHook,
 }: let
+  modelsDev = import ../models-dev/packages.nix {
+    inherit lib stdenvNoCC bun fetchFromGitHub nix-update-script writableTmpDirAsHomeHook;
+  };
   opencode-node-modules-hash = {
     "aarch64-darwin" = "sha256-TAeFDsHGFJnUyp20ec+Rxp4t1FrWKfbtnxsE8PnLS0o=";
     "aarch64-linux" = "sha256-F056MWf2dNAO21ezEvWg689WUibtz4Q4mcSuDuSY5EM=";
@@ -108,7 +111,7 @@ in
 
     nativeBuildInputs = [
       bun
-      models-dev
+      modelsDev
     ];
 
     patches = [
@@ -125,7 +128,7 @@ in
       runHook postConfigure
     '';
 
-    env.MODELS_DEV_API_JSON = "${models-dev}/dist/api.json";
+    env.MODELS_DEV_API_JSON = "${modelsDev}/dist/api.json";
 
     buildPhase = ''
       runHook preBuild
