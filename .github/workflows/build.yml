@@ -16,6 +16,7 @@ jobs:
           - opencode
           - prs
           - toney
+          - omm
 
     uses: ./.github/workflows/nix.yml
     with:
