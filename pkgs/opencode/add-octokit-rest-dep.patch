@@ -1,0 +1,11 @@
+--- a/packages/opencode/package.json
++++ b/packages/opencode/package.json
+@@ -50,7 +50,8 @@
+     "vscode-jsonrpc": "8.2.1",
+     "xdg-basedir": "5.1.0",
+     "yargs": "18.0.0",
+     "zod": "catalog:",
+     "zod-openapi": "4.1.0"
++    ,"@octokit/rest": "latest"
+   }
+ }
