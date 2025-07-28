@@ -13,9 +13,9 @@
     inherit lib stdenvNoCC bun fetchFromGitHub nix-update-script writableTmpDirAsHomeHook;
   };
   opencode-node-modules-hash = {
-    "aarch64-darwin" = "sha256-sZ7rU/IVgqCHoIqCMhCCz2GLkozfJsf40Kehorzu6kM=";
-    "aarch64-linux" = "sha256-l7vBt2+iAhdCgBABQYfCLRjLxNbY41jcVwqHJwOR64w=";
-    "x86_64-darwin" = "sha256-PVgBPdygsptjNQdF6JOuv+//HUqkFQjQ0ZSKctDmiEM=";
+    "aarch64-darwin" = "sha256-so+KiAo8C7olbJaCH1rIVxs/tq/g9l5pKPaU8D+Zm28=";
+    "aarch64-linux" = "sha256-JNf8g0z6oH2OXJLAmCSP0W4WX+GGyald5DAFOYCBNP0=";
+    "x86_64-darwin" = "sha256-jwmH4gEcyRNgeMvYz2SyWRagFkYN1O3ULEQIPPgqhwg=";
     "x86_64-linux" = "sha256-L7RwhE9Ixu00vupyzu9k2TzdmLBGaE0QMiS+QDO+HLQ=";
   };
   bun-target = {
@@ -27,12 +27,12 @@
 in
   stdenvNoCC.mkDerivation (finalAttrs: {
     pname = "opencode";
-    version = "0.3.78";
+    version = "0.3.80";
     src = fetchFromGitHub {
       owner = "sst";
       repo = "opencode";
       tag = "v${finalAttrs.version}";
-      hash = "sha256-sKvA5486IYRUD0J3ljD+zW9t8qqDGya7id2ZcohBcUE=";
+      hash = "sha256-ao/O70ur/b9/tYXWHoHPOzXnrLKKTOeDOemD7+/gnFk=";
     };
 
     tui = buildGoModule {
