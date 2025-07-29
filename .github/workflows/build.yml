@@ -17,6 +17,7 @@ jobs:
           - prs
           - toney
           - omm
+          - crush
 
     uses: ./.github/workflows/nix.yml
     with:
