@@ -15,12 +15,12 @@
 in
   stdenvNoCC.mkDerivation (finalAttrs: {
     pname = "models-dev";
-    version = "0-unstable-2025-07-23";
+    version = "0-unstable-2025-07-30";
     src = fetchFromGitHub {
       owner = "sst";
       repo = "models.dev";
-      rev = "affbfa8012d0dbc0eba81ea51ec32069c71af417";
-      hash = "sha256-JPcurldPuaFPfwqiWQR83x1uDcL0Dy79kx2TAOiNnyQ=";
+      rev = "2bc25f1c57a61c0bcb29e4a7ed331be332991c15";
+      hash = "sha256-xCYu8AsTtH9ZVhFZ/sxukj92RSwZGmeQRE3COmiRqI4=";
     };
 
     node_modules = stdenvNoCC.mkDerivation {
@@ -40,6 +40,13 @@ in
       ];
 
       dontConfigure = true;
+
+      patches = [
+        # In bun 1.2.13 (release-25.05) HTML entrypoints get content hashes
+        # appended → index.html becomes index-pq8vj7za.html in ./dist. So, we
+        # rename the index file back to index.html
+        ./post-build-rename-index-file.patch
+      ];
 
       buildPhase = ''
         runHook preBuild
