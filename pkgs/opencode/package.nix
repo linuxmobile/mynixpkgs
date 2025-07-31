@@ -85,6 +85,7 @@ in
          bun install \
            --filter=opencode \
            --force \
+           --froze-lockfile \
            --no-progress
 
         runHook postBuild
