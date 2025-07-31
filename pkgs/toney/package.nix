@@ -5,16 +5,16 @@
 }:
 buildGoModule rec {
   pname = "toney";
-  version = "1.1.1";
+  version = "2.0.1";
 
   src = fetchFromGitHub {
     owner = "SourcewareLab";
     repo = "Toney";
     tag = "v${version}";
-    hash = "sha256-o9W0HsLWNgwIyZtb55kzMw7hOtt+ueWkz/rxbb+pgJg=";
+    hash = "sha256-y2j/WselGVLMVUcYfzCJeOySwo1o6W5flhdJvx/F2qk=";
   };
 
-  vendorHash = "sha256-7I3RIrEc+uz8LQCRe0jXPfKqXojHsksZ7w4M9OLY6hM=";
+  vendorHash = "sha256-Ri9s9JZOAXFxw7/ffPitlfk/O7ccfv/t80QIwMbe/mE=";
 
   doCheck = false;
 
