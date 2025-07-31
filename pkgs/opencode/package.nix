@@ -4,18 +4,16 @@
   buildGoModule,
   bun,
   fetchFromGitHub,
+  models-dev,
   nix-update-script,
   testers,
   writableTmpDirAsHomeHook,
 }: let
-  modelsDev = import ../models-dev/packages.nix {
-    inherit lib stdenvNoCC bun fetchFromGitHub nix-update-script writableTmpDirAsHomeHook;
-  };
   opencode-node-modules-hash = {
     "aarch64-darwin" = "sha256-iPMaEpepvKCb0VEUQPy4to6kwgSKnVsMbckVEYF+58E=";
     "aarch64-linux" = "sha256-Ybf8MiiCHHEMQGqc4PGPHvcfons+sLvhO4UkWQghJ34=";
     "x86_64-darwin" = "sha256-5ULx3Y7RmMggyMp7eGN7XFCKvoIqW7W7lHaTlgjBLWo=";
-    "x86_64-linux" = "sha256-xY98lHNXVJjUg9zAGwrqIFbK1RmnRc8FH73w0LD8I+U=";
+    "x86_64-linux" = "sha256-ZtZvS0jF2YpkDeCdP2y1qX4fJVMq8BBq6EFwqvDEfdc=";
   };
   bun-target = {
     "aarch64-darwin" = "bun-darwin-arm64";
@@ -85,7 +83,7 @@ in
          bun install \
            --filter=opencode \
            --force \
-           --froze-lockfile \
+           --frozen-lockfile \
            --no-progress
 
         runHook postBuild
@@ -110,7 +108,7 @@ in
 
     nativeBuildInputs = [
       bun
-      modelsDev
+      models-dev
     ];
 
     patches = [
@@ -127,7 +125,7 @@ in
       runHook postConfigure
     '';
 
-    env.MODELS_DEV_API_JSON = "${modelsDev}/dist/api.json";
+    env.MODELS_DEV_API_JSON = "${models-dev}/dist/api.json";
 
     buildPhase = ''
       runHook preBuild
