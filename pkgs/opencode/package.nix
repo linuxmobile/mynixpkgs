@@ -15,7 +15,7 @@
     "aarch64-darwin" = "sha256-iPMaEpepvKCb0VEUQPy4to6kwgSKnVsMbckVEYF+58E=";
     "aarch64-linux" = "sha256-Ybf8MiiCHHEMQGqc4PGPHvcfons+sLvhO4UkWQghJ34=";
     "x86_64-darwin" = "sha256-5ULx3Y7RmMggyMp7eGN7XFCKvoIqW7W7lHaTlgjBLWo=";
-    "x86_64-linux" = "sha256-ZtZvS0jF2YpkDeCdP2y1qX4fJVMq8BBq6EFwqvDEfdc=";
+    "x86_64-linux" = "sha256-xY98lHNXVJjUg9zAGwrqIFbK1RmnRc8FH73w0LD8I+U=";
   };
   bun-target = {
     "aarch64-darwin" = "bun-darwin-arm64";
@@ -26,12 +26,12 @@
 in
   stdenvNoCC.mkDerivation (finalAttrs: {
     pname = "opencode";
-    version = "0.3.85";
+    version = "0.3.101";
     src = fetchFromGitHub {
       owner = "sst";
       repo = "opencode";
       tag = "v${finalAttrs.version}";
-      hash = "sha256-7L50P3+u4SHQtjSdFJviPaeLFnOIGP/l4BFLHKm4pNs=";
+      hash = "sha256-M3E39IdU8Y2hZxq30VBAyjZY9oAmrpkOWtPVIVKAXug=";
     };
 
     tui = buildGoModule {
@@ -85,7 +85,6 @@ in
          bun install \
            --filter=opencode \
            --force \
-           --frozen-lockfile \
            --no-progress
 
         runHook postBuild
