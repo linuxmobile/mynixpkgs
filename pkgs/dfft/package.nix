@@ -3,6 +3,7 @@
   rustPlatform,
   fetchFromGitHub,
   pkg-config,
+  alsa-lib,
 }:
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "dfft";
@@ -17,7 +18,9 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   cargoHash = "sha256-mBvUzqXrpQyeZcIKhmA6v5rIoXIHTSG0sqisZwRTniw=";
 
-  nativeBuildInputs = [pkg-config];
+  nativeBuildInputs = [pkg-config alsa-lib];
+
+  PKG_CONFIG_PATH = lib.makeSearchPath "lib/pkgconfig" [alsa-lib.dev];
 
   meta = {
     description = "Monitor changes as AI agents modify your codebase.";
