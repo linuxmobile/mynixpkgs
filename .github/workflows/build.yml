@@ -18,6 +18,7 @@ jobs:
           - toney
           - omm
           - crush
+          - dgop
 
     uses: ./.github/workflows/nix.yml
     with:
