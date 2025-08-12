@@ -18,6 +18,13 @@ buildGoModule rec {
 
   doCheck = false;
 
+  installPhase = ''
+    runHook preInstall
+    install -Dm755 $GOPATH/bin/cli $out/bin/cli
+    ln -s $out/bin/cli $out/bin/dgop
+    runHook postInstall
+  '';
+
   meta = {
     description = "System monitoring tool with CLI and REST API.";
     homepage = "https://github.com/AvengeMedia/dgop";
