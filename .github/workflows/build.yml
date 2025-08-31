@@ -13,12 +13,13 @@ jobs:
       matrix:
         package:
           - bmm
+          - chatuino
+          - crush
+          - dgop
+          - omm
           - opencode
           - prs
           - toney
-          - omm
-          - crush
-          - dgop
 
     uses: ./.github/workflows/nix.yml
     with:
