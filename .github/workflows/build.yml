@@ -13,6 +13,7 @@ jobs:
       matrix:
         package:
           - bmm
+          - claude-code-proxy
           - dgop
           - omm
           - prs
