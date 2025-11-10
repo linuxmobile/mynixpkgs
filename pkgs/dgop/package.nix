@@ -7,16 +7,16 @@
 }:
 buildGoModule rec {
   pname = "dgop";
-  version = "0.1.7";
+  version = "0.1.11";
 
   src = fetchFromGitHub {
     owner = "AvengeMedia";
     repo = "dgop";
     tag = "v${version}";
-    hash = "sha256-Lm/6kEqMiP+1X5eno80vANBhLEhFRjRki9LzSfXpvNs=";
+    hash = "sha256-QhzRn7pYN35IFpKjjxJAj3GPJECuC+VLhoGem3ezycc=";
   };
 
-  vendorHash = "sha256-2iZwpbTEpxlDEdCbYSdDbW/G+9znxr0cqQky3Uaqnv4=";
+  vendorHash = "sha256-kO8b/eV5Vm/Fwzyzb0p8N9SkNlhkJLmEiPYmR2m5+po=";
 
   ldflags = [
     "-s"

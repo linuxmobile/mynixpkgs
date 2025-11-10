@@ -8,16 +8,16 @@
 }:
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "youtui";
-  version = "0.0.25";
+  version = "0.0.26";
 
   src = fetchFromGitHub {
     owner = "nick42d";
     repo = "youtui";
     tag = "youtui/v${finalAttrs.version}";
-    hash = "sha256-hxoRrt0A2JoZdjxoh69b7F3i0+m0GOlggcpihlj4LOY=";
+    hash = "sha256-OcAoaIpM6EA2ZrvPEnSzYZrRf7AakwTSEvjMm7g2xfE=";
   };
 
-  cargoHash = "sha256-sXu6Db1kgNQN5QUdwjKEpypML6DFG/oU/mazxdZFM7Y=";
+  cargoHash = "sha256-/ThEvscSrdZDNJxa+aLacg3/jnkQmevdDJngnHoGgaw=";
 
   nativeBuildInputs = [pkg-config openssl alsa-lib];
   PKG_CONFIG_PATH = lib.makeSearchPath "lib/pkgconfig" [openssl.dev alsa-lib.dev];

@@ -13,11 +13,8 @@ jobs:
       matrix:
         package:
           - bmm
-          - chatuino
-          - crush
           - dgop
           - omm
-          - opencode
           - prs
           - toney
 
