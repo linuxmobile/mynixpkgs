@@ -94,7 +94,7 @@ in
       description = "Unofficial desktop client for F1 TV";
       homepage = "https://multiviewer.app";
       downloadPage = "https://multiviewer.app/download";
-      license = licenses.unfree;
+      license = licenses.mit;
       platforms = ["x86_64-linux"];
       mainProgram = "multiviewer";
     };
