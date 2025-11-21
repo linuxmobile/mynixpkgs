@@ -3,6 +3,7 @@
   rustPlatform,
   fetchFromGitHub,
   pkg-config,
+  openssl,
 }:
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "shore";
@@ -11,13 +12,16 @@ rustPlatform.buildRustPackage (finalAttrs: {
   src = fetchFromGitHub {
     owner = "MoonKraken";
     repo = "shore";
-    tag = "v${finalAttrs.version}";
-    hash = "sha256-sf0000Z/LKOXfnA0PB3LRbPHYoA+FJV4frYU+BpC6WI=";
+    tag = "${finalAttrs.version}";
+    hash = "sha256-K9GKMijLU1ii5O8P4fT5Vl3S3HoVmvcUyCiIC69dTdU=";
   };
 
-  cargoHash = "sha256-+o81111Pe9zwiDBUMllpF+my7gp3iLX0+DntFtN7PoI=";
+  cargoHash = "sha256-HYdTODIHA1TGhu6BKrKFkvBlGtqVt89wYX9Ehn0EOC0=";
 
-  nativeBuildInputs = [pkg-config];
+  nativeBuildInputs = [pkg-config openssl];
+  PKG_CONFIG_PATH = lib.makeSearchPath "lib/pkgconfig" [openssl.dev];
+  # All test fail without this
+  doCheck = false;
 
   meta = {
     description = "CLI-based frontend for inference providers with vim inspired keybindings";

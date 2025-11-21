@@ -13,11 +13,11 @@ jobs:
       matrix:
         package:
           - bmm
-          - claude-code-proxy
           - dgop
+          - multiviewer
           - omm
+          - orchat
           - prs
-          - toney
 
     uses: ./.github/workflows/nix.yml
     with:

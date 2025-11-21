@@ -4,7 +4,7 @@
   python3,
 }:
 python3.pkgs.buildPythonApplication rec {
-  pname = "orchats";
+  pname = "orchat";
   version = "1.4.1";
   pyproject = true;
 
@@ -12,7 +12,7 @@ python3.pkgs.buildPythonApplication rec {
     owner = "oop7";
     repo = "OrChat";
     rev = "v${version}";
-    hash = "sha256-/Dq2oN5d2z8b8tE9uZfWvR4+jXbL9kP7mG3hY6uI0pQ=";
+    hash = "sha256-QUQmbGW/M5P54nptaz0/dbuR6ThhPMjoO/t47mOcjwE=";
   };
 
   propagatedBuildInputs = with python3.pkgs; [
@@ -24,6 +24,7 @@ python3.pkgs.buildPythonApplication rec {
     colorama
     cryptography
     prompt-toolkit
+    packaging
   ];
 
   nativeBuildInputs = with python3.pkgs; [
@@ -31,15 +32,33 @@ python3.pkgs.buildPythonApplication rec {
     setuptools-scm
   ];
 
+  postPatch = ''
+    substituteInPlace main.py \
+      --replace-fail \
+        'session_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sessions", session_id)' \
+        'session_dir = os.path.join(os.getenv("XDG_STATE_HOME", os.path.expanduser("~/.local/state")), "orchat", "sessions", session_id)' \
+      --replace-fail \
+        "key_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.key')" \
+        "key_file = os.path.expanduser('~/.config/orchat/.env')" \
+      --replace-fail \
+      "config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')" \
+      "config_file = os.path.expanduser('~/.config/orchat/config.ini')"
+  '';
+
+  postInstall = ''
+    wrapProgram $out/bin/orchat \
+      --run "mkdir -p ~/.config/orchat"
+  '';
+
   doCheck = false;
 
-  pythonImportsCheck = ["orchats"];
+  pythonImportsCheck = [];
 
   meta = with lib; {
     description = "Terminal LLM client for OpenRouter, OpenAI, Ollama, Groq, Anthropic, etc.";
     homepage = "https://github.com/oop7/OrChat";
     license = licenses.mit;
-    mainProgram = "orchats";
+    mainProgram = "orchat";
     platforms = platforms.all;
   };
 }
