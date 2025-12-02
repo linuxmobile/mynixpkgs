@@ -1,37 +1,41 @@
 {
+  lib,
+  stdenv,
+  fetchurl,
+  makeWrapper,
+  autoPatchelfHook,
+  copyDesktopItems,
+  callPackage,
   alsa-lib,
   at-spi2-atk,
   at-spi2-core,
-  autoPatchelfHook,
   cairo,
-  callPackage,
-  copyDesktopItems,
   cups,
-  fetchurl,
-  gcc-unwrapped,
+  dbus,
+  gtk3,
   glib,
   gsettings-desktop-schemas,
-  gtk3,
-  lib,
-  libGL,
-  makeWrapper,
+  libdrm,
+  libgbm,
+  libxkbcommon,
   mesa,
   nspr,
   nss,
   pango,
-  stdenv,
   systemd,
   wayland,
-  dbus,
-  libxkbcommon,
-  libdrm,
-  libgbm,
   xorg,
+  libGL,
+  vulkan-loader,
+  libva,
+  libvdpau,
+  gcc-unwrapped,
+  patchelfUnstable,
 }: let
   helium-widevine = callPackage ./widevine-x86_64-linux.nix {};
 in
   stdenv.mkDerivation rec {
-    pname = "helium-browser";
+    pname = "helium";
     version = "0.6.9.1";
 
     src = fetchurl {
@@ -43,6 +47,7 @@ in
 
     nativeBuildInputs = [
       autoPatchelfHook
+      patchelfUnstable
       makeWrapper
       copyDesktopItems
     ];
@@ -54,11 +59,9 @@ in
       cairo
       cups
       dbus
-      gcc-unwrapped.lib
+      gtk3
       glib
       gsettings-desktop-schemas
-      gtk3
-      libGL
       libdrm
       libgbm
       libxkbcommon
@@ -79,8 +82,20 @@ in
       xorg.libXrandr
       xorg.libXrender
       xorg.libXtst
+      gcc-unwrapped.lib
     ];
 
+    runtimeDependencies = map lib.getLib [libGL mesa vulkan-loader libva libvdpau];
+
+    appendRunpaths = [
+      "${libGL}/lib"
+      "${mesa}/lib"
+      "${vulkan-loader}/lib"
+      "${libva}/lib"
+      "${libvdpau}/lib"
+    ];
+
+    patchelfFlags = ["--no-clobber-old-sections"];
     autoPatchelfIgnoreMissingDeps = [
       "libQt5Core.so.5"
       "libQt5Gui.so.5"
@@ -90,56 +105,36 @@ in
       "libQt6Widgets.so.6"
     ];
 
-    unpackPhase = ''
-      runHook preUnpack
-      tar xf $src
-      runHook postUnpack
-    '';
-
     installPhase = ''
-      runHook preInstall
-
-      mkdir -p $out/opt/helium $out/bin
-
+      mkdir -p $out/bin $out/opt/helium
       cp -r helium-${version}-x86_64_linux/* $out/opt/helium/
-      chmod +x $out/opt/helium/chrome-wrapper $out/opt/helium/chrome
+      chmod +x $out/opt/helium/{chrome,chrome-wrapper}
 
       cp -r ${helium-widevine}/share/helium/WidevineCdm $out/opt/helium/
 
-      makeWrapper $out/opt/helium/chrome-wrapper $out/bin/helium-browser \
-        --chdir $out/opt/helium \
-        --prefix XDG_DATA_DIRS : "$GSETTINGS_SCHEMAS_PATH:${gsettings-desktop-schemas}/share/gsettings-schemas/${gsettings-desktop-schemas.name}" \
-        --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [
-        libGL
-        mesa
-        libxkbcommon
-        dbus
-        libgbm
-        libdrm
-        wayland
-      ]}"
-
-      install -Dm644 helium-${version}-x86_64_linux/product_logo_256.png \
+      install -D $out/opt/helium/product_logo_256.png \
         $out/share/icons/hicolor/256x256/apps/helium.png
 
-      install -Dm644 helium-${version}-x86_64_linux/helium.desktop \
-        $out/share/applications/helium.desktop
+      install -Dm644 $out/opt/helium/helium.desktop \
+      $out/share/applications/helium.desktop
 
       substituteInPlace $out/share/applications/helium.desktop \
-        --replace-fail 'Exec=chromium' "Exec=$out/bin/helium-browser"
+        --replace-fail 'Exec=chromium' 'Exec=helium' \
+        --replace-fail 'StartupWMClass=helium' 'StartupWMClass=Helium' \
+        --replace-fail 'Icon=helium' 'Icon=helium'
+
+      makeWrapper $out/opt/helium/chrome-wrapper $out/bin/helium \
+        --chdir "$out/opt/helium" \
+        --add-flags "--ozone-platform-hint=auto" \
+        --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath runtimeDependencies}"
 
       runHook postInstall
     '';
 
-    runtimeDependencies = [
-      libGL
-      mesa
-    ];
-
     meta = {
-      homepage = "https://helium.computer";
       description = "Private, fast, and honest web browser based on Chromium";
+      homepage = "https://helium.computer";
+      mainProgram = "helium";
       platforms = ["x86_64-linux"];
-      mainProgram = "helium-browser";
     };
   }
