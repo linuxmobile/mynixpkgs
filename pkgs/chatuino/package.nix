@@ -6,16 +6,16 @@
 }:
 buildGoModule rec {
   pname = "chatuino";
-  version = "0.6.0";
+  version = "0.6.2";
 
   src = fetchFromGitHub {
     owner = "julez-dev";
     repo = "chatuino";
     rev = "v${version}";
-    hash = "sha256-5F/CWr3mlDjEcmq6fYJaDqIK4rCzLuBYVMvPAWmoH5I=";
+    hash = "sha256-e7t9WxpLrNWVY7oddmJozwq5tTLcfx2ii+1oCBRCgvo=";
   };
 
-  vendorHash = "sha256-XSWHIEiOs2E8Keh0Lk0b99B5nKm3rlNFFyAGbBPrcq0=";
+  vendorHash = "sha256-b86ell9S4bie3p831Z8PRjh45Izr8ukWrYs8bFko/U0=";
 
   nativeBuildInputs = [installShellFiles];
 

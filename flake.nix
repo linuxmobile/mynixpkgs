@@ -23,12 +23,17 @@
       systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
       imports = [];
 
-      perSystem = {pkgs, ...}: {
+      perSystem = {
+        pkgs,
+        system,
+        self',
+        ...
+      }: {
         packages = pkgs.lib.genAttrs dirs (name: pkgs.callPackage (./pkgs/${name}/package.nix) {});
         formatter = pkgs.alejandra;
         checks = {
           glow-build = pkgs.runCommand "glow-build-test" {} ''
-            ${pkgs.glow}/bin/glow --version > $out
+            ${self'.packages.glow}/bin/glow --version > $out
           '';
         };
         devShells = {
@@ -41,7 +46,6 @@
   );
 
   nixConfig = {
-    allowInsecure = true;
     extra-substituters = ["https://linuxmobile.cachix.org"];
     extra-trusted-public-keys = ["linuxmobile.cachix.org-1:2K7KEjzbd3U+qMQRte/DGqttosw8EGgGVvu8vKu8D6A="];
   };

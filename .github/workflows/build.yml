@@ -13,7 +13,6 @@ jobs:
       matrix:
         package:
           - bmm
-          - dgop
           - helium
           - multiviewer
           - omm
