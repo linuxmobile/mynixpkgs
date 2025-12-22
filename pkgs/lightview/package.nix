@@ -10,6 +10,8 @@
   gtk4,
   pango,
   pkg-config,
+  copyDesktopItems,
+  makeDesktopItem,
 }:
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "lightview";
@@ -26,6 +28,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   nativeBuildInputs = [
     pkg-config
+    copyDesktopItems
   ];
 
   buildInputs = [
@@ -37,6 +40,32 @@ rustPlatform.buildRustPackage (finalAttrs: {
     gst_all_1.gst-plugins-base
     gtk4
     pango
+  ];
+
+  desktopItems = [
+    (makeDesktopItem {
+      name = "lightview";
+      exec = "lightview %F";
+      icon = "image-x-generic";
+      desktopName = "Lightview";
+      comment = "Blazing-fast, minimalist image viewer";
+      categories = ["Graphics" "Viewer"];
+      mimeTypes = [
+        "image/jpeg"
+        "image/jpg"
+        "image/png"
+        "image/gif"
+        "image/webp"
+        "image/bmp"
+        "image/tiff"
+        "image/svg+xml"
+        "image/x-tga"
+        "image/x-icon"
+        "image/vnd.microsoft.icon"
+      ];
+      terminal = false;
+      startupNotify = true;
+    })
   ];
 
   meta = {
