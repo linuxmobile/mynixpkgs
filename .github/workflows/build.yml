@@ -15,6 +15,7 @@ jobs:
           - bmm
           - dawn
           - helium
+          - lightview
           - multiviewer
           - omm
           - orchat
