@@ -8,14 +8,14 @@
 }:
 gcc13Stdenv.mkDerivation rec {
   pname = "dawn";
-  version = "0.0.11";
+  version = "0.1.2";
 
   src = fetchFromGitHub {
     owner = "andrewmd5";
     repo = "dawn";
     tag = "v${version}";
     fetchSubmodules = true;
-    hash = "sha256-W7cqR2dw5DFTdW9Br1wNZuHasFgla/+AzERJ24y+YPw=";
+    hash = "sha256-E5FIFJ6thNK8xosdDgrJdguO0E4ssXeaAh9JZEk/Zqg=";
   };
 
   nativeBuildInputs = [cmake];
