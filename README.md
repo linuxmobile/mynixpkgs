@@ -4,9 +4,11 @@ A curated collection of Nix packages, built for when the official nixpkgs proces
 
 - **bmm** - Get to your bookmarks in a flash
 - **chatuino** - A feature-rich TUI Twitch IRC client
+- **dawn** - Distraction-free terminal-based markdown editor with live rendering
 - **dfft** - Monitor changes as AI agents modify your codebase
 - **glow** - Render markdown on the CLI, with pizzazz!
 - **helium** - Private, fast, and honest web browser based on Chromium
+- **lightview** - Blazing-fast, minimalist image viewer
 - **multiviewer** - Unofficial desktop client for F1 TV
 - **nekot** - Terminal utility for interacting with local and cloud LLMs
 - **omm** - Keyboard-driven task manager for the command line

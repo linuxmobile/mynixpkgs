@@ -36,11 +36,11 @@
 in
   stdenv.mkDerivation rec {
     pname = "helium";
-    version = "0.7.7.1";
+    version = "0.7.7.2";
 
     src = fetchurl {
       url = "https://github.com/imputnet/helium-linux/releases/download/${version}/helium-${version}-x86_64_linux.tar.xz";
-      hash = "sha256-aY9GwIDPTcskm55NluSyxkCHC6drd6BdBaNYZhrzlRE=";
+      hash = "sha256-PswWOwMOD+l4zpGiyasAPfy8tKUIc8OtGNDlYAccwCc=";
     };
 
     sourceRoot = ".";
@@ -119,9 +119,8 @@ in
       $out/share/applications/helium.desktop
 
       substituteInPlace $out/share/applications/helium.desktop \
-        --replace-fail 'Exec=chromium' 'Exec=helium' \
-        --replace-fail 'StartupWMClass=helium' 'StartupWMClass=Helium' \
-        --replace-fail 'Icon=helium' 'Icon=helium'
+        --replace-warn 'Exec=chromium' 'Exec=helium' \
+        --replace-fail 'StartupWMClass=helium' 'StartupWMClass=Helium'
 
       makeWrapper $out/opt/helium/chrome-wrapper $out/bin/helium \
         --chdir "$out/opt/helium" \
