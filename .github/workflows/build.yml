@@ -13,6 +13,7 @@ jobs:
       matrix:
         package:
           - bmm
+          - cloudflare-speed-cli
           - dawn
           - helium
           - lightview
