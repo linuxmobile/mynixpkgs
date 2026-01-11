@@ -6,16 +6,16 @@
 }:
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "cloudflare-speed-cli";
-  version = "0.4.5";
+  version = "0.6.0";
 
   src = fetchFromGitHub {
     owner = "kavehtehrani";
     repo = "cloudflare-speed-cli";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-XLyStlbBO8Pl+AZHHv6uafQX0OtRzonqTRx6tJTSJ5M=";
+    hash = "sha256-sROTLGNImivnLZDoeuqAxV3MsRPUosQR9EldRtU3zQ0=";
   };
 
-  cargoHash = "sha256-7cIKRInEO0cndbA8pcpMOOfQq/N6ieOWZJGxB8Bys6E=";
+  cargoHash = "sha256-BwL2iUqHn55pem5NkbxKmYdXWQ59Fusgx/FJy/9iAfY=";
 
   nativeBuildInputs = [pkg-config];
 

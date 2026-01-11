@@ -5,16 +5,16 @@
 }:
 buildGoModule (finalAttrs: {
   pname = "nekot";
-  version = "0.7.9";
+  version = "0.8.2";
 
   src = fetchFromGitHub {
     owner = "BalanceBalls";
     repo = "nekot";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-bWosTrFmGyZbDR7l3Wp3ba3kK4qd9zpfiB46LiuV9mQ=";
+    hash = "sha256-Yk6yhy/reFddIHUT1x07VCzHiPfEOKdvAVkhwUOJ3qM=";
   };
 
-  vendorHash = "sha256-ey+lWmMoK8JS9PoOJWuVX6R0OqWrL4DU1Vihr6JXbOM=";
+  vendorHash = "sha256-oor12No/R+d/yqzY4BquChaYtPnHRE9ZZNIJdQylohk=";
 
   ldflags = [
     "-s"
