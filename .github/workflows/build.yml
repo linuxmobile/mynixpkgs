@@ -13,14 +13,13 @@ jobs:
       matrix:
         package:
           - bmm
-          - cloudflare-speed-cli
           - dawn
           - helium
           - lightview
           - multiviewer
           - omm
-          - orchat
           - prs
+          - gemini-cli
 
     uses: ./.github/workflows/nix.yml
     with:
