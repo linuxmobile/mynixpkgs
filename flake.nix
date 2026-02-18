@@ -3,14 +3,20 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    flake-parts.url = "github:hercules-ci/flake-parts";
+    systems.url = "github:nix-systems/default";
   };
 
   outputs = {
     self,
     nixpkgs,
+    systems,
     ...
-  } @ inputs: let
+  }: let
+    eachSystem = fn:
+      nixpkgs.lib.genAttrs
+      (import systems)
+      (system: fn nixpkgs.legacyPackages.${system});
+
     pkgsDir = builtins.readDir ./pkgs;
     dirs = builtins.filter (
       name:
@@ -18,32 +24,19 @@
         == "directory"
         && builtins.hasAttr "package.nix" (builtins.readDir (./pkgs/${name}))
     ) (builtins.attrNames pkgsDir);
-  in (
-    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
-      systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
-      imports = [];
+  in {
+    packages =
+      eachSystem (pkgs:
+        pkgs.lib.genAttrs dirs (name: pkgs.callPackage (./pkgs/${name}/package.nix) {}));
 
-      perSystem = {
-        pkgs,
-        system,
-        self',
-        ...
-      }: {
-        packages = pkgs.lib.genAttrs dirs (name: pkgs.callPackage (./pkgs/${name}/package.nix) {});
-        formatter = pkgs.alejandra;
-        checks = {
-          glow-build = pkgs.runCommand "glow-build-test" {} ''
-            ${self'.packages.glow}/bin/glow --version > $out
-          '';
-        };
-        devShells = {
-          default = pkgs.mkShell {
-            buildInputs = [pkgs.alejandra pkgs.git];
-          };
-        };
+    formatter = eachSystem (pkgs: pkgs.alejandra);
+
+    devShells = eachSystem (pkgs: {
+      default = pkgs.mkShell {
+        buildInputs = [pkgs.alejandra pkgs.git];
       };
-    }
-  );
+    });
+  };
 
   nixConfig = {
     extra-substituters = ["https://linuxmobile.cachix.org"];

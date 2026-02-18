@@ -5,21 +5,62 @@ on:
     secrets:
       CACHIX_AUTH_TOKEN:
         required: false
+  workflow_dispatch:
 
 jobs:
+  get-changed-packages:
+    runs-on: ubuntu-latest
+    outputs:
+      packages: ${{ steps.set-matrix.outputs.packages }}
+      any_changed: ${{ steps.set-matrix.outputs.any_changed }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Get changed files in pkgs/
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: pkgs/**
+          dir_names: true
+          dir_names_max_depth: 2
+
+      - id: set-matrix
+        run: |
+          CHANGED_DIRS="${{ steps.changed-files.outputs.all_changed_files }}"
+          
+          if [ -z "$CHANGED_DIRS" ]; then
+            echo "packages=[]" >> $GITHUB_OUTPUT
+            echo "any_changed=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          VALID_PACKAGES=()
+          IFS=',' read -ra ADDR <<< "$CHANGED_DIRS"
+          for dir in "${ADDR[@]}"; do
+            pkg=$(basename "$dir")
+            if [ -f "pkgs/$pkg/package.nix" ]; then
+              VALID_PACKAGES+=("\"$pkg\"")
+            fi
+          done
+          
+          if [ ${#VALID_PACKAGES[@]} -eq 0 ]; then
+            echo "packages=[]" >> $GITHUB_OUTPUT
+            echo "any_changed=false" >> $GITHUB_OUTPUT
+          else
+            JSON_PACKAGES=$(IFS=,; echo "[${VALID_PACKAGES[*]}]")
+            echo "packages=$JSON_PACKAGES" >> $GITHUB_OUTPUT
+            echo "any_changed=true" >> $GITHUB_OUTPUT
+          fi
+
   build:
+    needs: get-changed-packages
+    if: needs.get-changed-packages.outputs.any_changed == 'true'
     strategy:
       fail-fast: false
       matrix:
-        package:
-          - bmm
-          - dawn
-          - helium
-          - lightview
-          - multiviewer
-          - omm
-          - prs
-          - gemini-cli
+        package: ${{ fromJson(needs.get-changed-packages.outputs.packages) }}
 
     uses: ./.github/workflows/nix.yml
     with:

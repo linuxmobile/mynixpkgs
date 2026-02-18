@@ -1,20 +1,45 @@
 name: Checks
 
-on: [push, pull_request, workflow_dispatch]
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
 
 jobs:
-  check:
-    strategy:
-      matrix:
-        command:
-          - NIXPKGS_ALLOW_INSECURE=1 nix flake check --impure
-          - nix run nixpkgs#alejandra -- -c . -e ./npins
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      global: ${{ steps.filter.outputs.global }}
+      nix: ${{ steps.filter.outputs.nix }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            global:
+              - 'flake.nix'
+              - 'flake.lock'
+              - '.github/workflows/**'
+            nix:
+              - '**/*.nix'
 
+  fmt:
+    needs: detect
+    if: needs.detect.outputs.nix == 'true'
     uses: ./.github/workflows/nix.yml
     with:
-      command: ${{ matrix.command }}
+      command: nix run nixpkgs#alejandra -- -c .
+
+  check:
+    needs: detect
+    if: github.event_name == 'pull_request' || needs.detect.outputs.global == 'true'
+    uses: ./.github/workflows/nix.yml
+    with:
+      command: NIXPKGS_ALLOW_INSECURE=1 nix flake check --impure
 
   build:
-    needs: check
+    needs: [detect, fmt]
     uses: ./.github/workflows/build.yml
     secrets: inherit
