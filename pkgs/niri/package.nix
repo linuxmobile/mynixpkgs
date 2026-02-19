@@ -26,7 +26,7 @@
 }:
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "niri";
-  version = "unstable-2026-02-19";
+  version = "25.11-unstable-2026-02-19";
 
   src = fetchFromGitHub {
     owner = "niri-wm";
@@ -125,6 +125,9 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   checkFlags = ["--skip=::egl"];
   nativeInstallCheckInputs = [versionCheckHook];
+  preVersionCheck = ''
+    version=25.11
+  '';
   doInstallCheck = true;
 
   passthru = {
