@@ -26,6 +26,7 @@ jobs:
           dir_names: true
           dir_names_max_depth: 2
           json: true
+          base_sha: ${{ github.event.before != '0000000000000000000000000000000000000000' && github.event.before || '' }}
 
       - id: set-matrix
         run: |
@@ -65,5 +66,5 @@ jobs:
 
     uses: ./.github/workflows/nix.yml
     with:
-      command: nix build -L .#${{ matrix.package }} --accept-flake-config
+      command: nix build -L .#${{ matrix.package }} --accept-flake-config --print-out-paths | xargs cachix push linuxmobile
     secrets: inherit

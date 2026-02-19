@@ -14,6 +14,8 @@ jobs:
       nix: ${{ steps.filter.outputs.nix }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: dorny/paths-filter@v3
         id: filter
         with:
@@ -41,5 +43,9 @@ jobs:
 
   build:
     needs: [detect, fmt]
+    if: |
+      always() &&
+      (needs.fmt.result == 'success' || needs.fmt.result == 'skipped') &&
+      (needs.detect.outputs.nix == 'true' || needs.detect.outputs.global == 'true')
     uses: ./.github/workflows/build.yml
     secrets: inherit
