@@ -25,20 +25,21 @@ jobs:
           files: pkgs/**
           dir_names: true
           dir_names_max_depth: 2
+          json: true
 
       - id: set-matrix
         run: |
-          CHANGED_DIRS="${{ steps.changed-files.outputs.all_changed_files }}"
+          CHANGED_DIRS='${{ steps.changed-files.outputs.all_changed_files }}'
           
-          if [ -z "$CHANGED_DIRS" ]; then
+          if [ "$CHANGED_DIRS" == "[]" ]; then
             echo "packages=[]" >> $GITHUB_OUTPUT
             echo "any_changed=false" >> $GITHUB_OUTPUT
             exit 0
           fi
           
           VALID_PACKAGES=()
-          IFS=',' read -ra ADDR <<< "$CHANGED_DIRS"
-          for dir in "${ADDR[@]}"; do
+          # Use jq to parse the JSON array and iterate over it
+          for dir in $(echo "$CHANGED_DIRS" | jq -r '.[]'); do
             pkg=$(basename "$dir")
             if [ -f "pkgs/$pkg/package.nix" ]; then
               VALID_PACKAGES+=("\"$pkg\"")
