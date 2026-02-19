@@ -26,30 +26,30 @@ jobs:
           files: pkgs/**
           dir_names: true
           dir_names_max_depth: 2
-          json: true
 
       - id: set-matrix
         env:
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            # Build everything if triggered manually
-            CHANGED_DIRS=$(find pkgs -maxdepth 1 -mindepth 1 -type d | jq -R . | jq -s -c .)
+            CHANGED_DIRS=$(find pkgs -maxdepth 1 -mindepth 1 -type d | cut -d'/' -f2)
           else
             CHANGED_DIRS="$ALL_CHANGED_FILES"
           fi
           
-          if [ -z "$CHANGED_DIRS" ] || [ "$CHANGED_DIRS" == "[]" ]; then
+          if [ -z "$CHANGED_DIRS" ]; then
             echo "packages=[]" >> $GITHUB_OUTPUT
             echo "any_changed=false" >> $GITHUB_OUTPUT
             exit 0
           fi
           
           VALID_PACKAGES=()
-          for dir in $(echo "$CHANGED_DIRS" | jq -r '.[]'); do
+          for dir in $CHANGED_DIRS; do
             pkg=$(basename "$dir")
             if [ -f "pkgs/$pkg/package.nix" ]; then
-              VALID_PACKAGES+=("\"$pkg\"")
+              if [[ ! " ${VALID_PACKAGES[@]} " =~ " \"$pkg\" " ]]; then
+                VALID_PACKAGES+=("\"$pkg\"")
+              fi
             fi
           done
           
@@ -72,5 +72,5 @@ jobs:
 
     uses: ./.github/workflows/nix.yml
     with:
-      command: nix build -L .#${{ matrix.package }} --accept-flake-config --print-out-paths | xargs cachix push linuxmobile
+      command: set -o pipefail; nix build -L .#${{ matrix.package }} --accept-flake-config --print-out-paths | xargs cachix push linuxmobile
     secrets: inherit

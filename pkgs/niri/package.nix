@@ -42,8 +42,6 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   postPatch = ''
     patchShebangs resources/niri-session
-    substituteInPlace resources/niri.service \
-      --replace-fail '/usr/bin' "$out/bin"
   '';
 
   cargoHash = "sha256-uo4AWT4nGV56iiSLhXK30goI7HCPc7AUZjRLgUvLfUE=";
@@ -140,10 +138,6 @@ rustPlatform.buildRustPackage (finalAttrs: {
     homepage = "https://github.com/niri-wm/niri";
     changelog = "https://github.com/niri-wm/niri/releases/tag/v${finalAttrs.version}";
     license = lib.licenses.gpl3Only;
-    maintainers = with lib.maintainers; [
-      sodiboo
-      getchoo
-    ];
     mainProgram = "niri";
     platforms = lib.platforms.linux;
   };
