@@ -42,6 +42,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   postPatch = ''
     patchShebangs resources/niri-session
+    substituteInPlace resources/niri.service \
+      --replace-fail 'ExecStart=niri' "ExecStart=$out/bin/niri"
+    substituteInPlace resources/niri-session \
+      --replace-fail 'exec niri' "exec $out/bin/niri"
   '';
 
   cargoHash = "sha256-uo4AWT4nGV56iiSLhXK30goI7HCPc7AUZjRLgUvLfUE=";
