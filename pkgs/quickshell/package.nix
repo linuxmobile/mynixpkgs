@@ -18,6 +18,9 @@
   libgbm,
   pipewire,
   pam,
+  glib,
+  polkit,
+  sysprof,
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "noctalia-qs";
@@ -55,6 +58,9 @@ stdenv.mkDerivation (finalAttrs: {
     libxcb
     pam
     pipewire
+    polkit
+    sysprof
+    glib
   ];
 
   cmakeFlags = [
