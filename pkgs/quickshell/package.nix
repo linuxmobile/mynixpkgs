@@ -24,7 +24,7 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "noctalia-qs";
-  version = "0.0.2";
+  version = "0.0.4";
 
   src = fetchFromGitHub {
     owner = "noctalia-dev";
