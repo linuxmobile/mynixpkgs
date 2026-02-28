@@ -30,7 +30,7 @@ stdenv.mkDerivation (finalAttrs: {
     owner = "noctalia-dev";
     repo = "noctalia-qs";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-rEuOibqZMx7+NvV2OVIdQQCDV9HT2lMsb9vHbA+d5FU=";
+    hash = "sha256-1QXO0UPKdDFc0dmIuyV8u/P+7ZlPtzxWbIakeUNJ0z8=";
   };
 
   nativeBuildInputs = [
@@ -67,7 +67,7 @@ stdenv.mkDerivation (finalAttrs: {
     (lib.cmakeFeature "DISTRIBUTOR" "Nixpkgs")
     (lib.cmakeBool "DISTRIBUTOR_DEBUGINFO_AVAILABLE" true)
     (lib.cmakeFeature "INSTALL_QML_PREFIX" qt6.qtbase.qtQmlPrefix)
-    (lib.cmakeFeature "GIT_REVISION" "tag-v${finalAttrs.version}")
+    (lib.cmakeFeature "GIT_REVISION" "v${finalAttrs.version}")
   ];
 
   cmakeBuildType = "RelWithDebInfo";
