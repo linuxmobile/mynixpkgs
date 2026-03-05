@@ -29,7 +29,10 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   installPhase = ''
     runHook preInstall
 
-    install -D "$src" "$out/bin/gemini"
+    install -Dm755 "$src" "$out/bin/gemini"
+
+    # fix shebang
+    sed -i "1s|#!/usr/bin/env -S node|#!${lib.getExe nodejs}|" "$out/bin/gemini"
 
     # disable auto-update
     sed -i '/enableAutoUpdate: {/,/}/ s/default: true/default: false/' "$out/bin/gemini"
