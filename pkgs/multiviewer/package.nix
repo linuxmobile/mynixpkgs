@@ -24,14 +24,14 @@
   xorg,
 }:
 stdenvNoCC.mkDerivation (finalAttrs: let
-  downloadId = "354596705";
+  downloadId = "367699519";
 in {
   pname = "multiviewer-for-f1";
-  version = "2.5.1";
+  version = "2.6.0";
 
   src = fetchurl {
     url = "https://releases.multiviewer.dev/download/${downloadId}/multiviewer_${finalAttrs.version}_amd64.deb";
-    hash = "sha256-9ts5CZD14CzJHiC3YoKWIEKiFpOrcUX1tRUhE4it5Mo=";
+    hash = "sha256-tlDrPA1drM/rNtiXb1GZPzxkCwYi3I9Gkvr3tJ9YzcI=";
   };
 
   nativeBuildInputs = [
