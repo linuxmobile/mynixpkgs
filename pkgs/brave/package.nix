@@ -65,7 +65,7 @@
 
   src = fetchurl {
     url = "https://github.com/brave/brave-browser/releases/download/v${version}/brave-origin-nightly_${version}_amd64.deb";
-    hash = "";
+    hash = "sha256-KrsWc9xVoC4AiM3pSjOu6fAYDoxU3qcPETqifu5XF2M=";
   };
 
   inherit
