@@ -21,7 +21,13 @@
   nspr,
   nss,
   pango,
-  xorg,
+  libX11,
+  libXcomposite,
+  libxcb,
+  libXdamage,
+  libXext,
+  libXfixes,
+  libXrandr,
 }: let
   id = "373278730";
 in
@@ -56,13 +62,13 @@ in
       nspr
       nss
       pango
-      xorg.libX11
-      xorg.libXcomposite
-      xorg.libxcb
-      xorg.libXdamage
-      xorg.libXext
-      xorg.libXfixes
-      xorg.libXrandr
+      libX11
+      libXcomposite
+      libxcb
+      libXdamage
+      libXext
+      libXfixes
+      libXrandr
     ];
 
     dontBuild = true;
