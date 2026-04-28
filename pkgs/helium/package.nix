@@ -36,11 +36,11 @@
 in
   stdenv.mkDerivation rec {
     pname = "helium";
-    version = "0.11.2.1";
+    version = "0.11.5.1";
 
     src = fetchurl {
       url = "https://github.com/imputnet/helium-linux/releases/download/${version}/helium-${version}-x86_64_linux.tar.xz";
-      hash = "sha256-7m4j0r1yQP5n2ww/+947ffR/PlcZPgvT29SyBo/qzZw=";
+      hash = "sha256-wz9nqa0oU+M0Y0z8kWMCV7JCXhT4fHxhgCZB5yl78no=";
     };
 
     sourceRoot = ".";
